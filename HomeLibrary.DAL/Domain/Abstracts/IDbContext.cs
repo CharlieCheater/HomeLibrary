@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HomeLibrary.Infrastructure.DataAccess.Interfaces
+namespace HomeLibrary.Infrastructure.Domain.Interfaces
 {
     public interface IDbContext
     {

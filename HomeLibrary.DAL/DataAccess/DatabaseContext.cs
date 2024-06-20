@@ -1,5 +1,4 @@
-﻿using HomeLibrary.Infrastructure.DataAccess.Interfaces;
-using HomeLibrary.Infrastructure.Domain.Interfaces;
+﻿using HomeLibrary.Infrastructure.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,8 +9,9 @@ using System.Threading.Tasks;
 
 namespace HomeLibrary.Infrastructure.DataAccess
 {
-    public class DatabaseContext : IDbContext
+    public class DatabaseContext : IDbContext, IDisposable
     {
+        private bool _disposed;
         public DatabaseContext(string connectionString)
         {
             ConnectionString = connectionString;
@@ -23,5 +23,13 @@ namespace HomeLibrary.Infrastructure.DataAccess
 
         public string ConnectionString { get; private set; }
 
+        public void Dispose()
+        {
+            if (_disposed)
+                return;
+            _disposed = true;
+            Connection.Dispose();
+            GC.SuppressFinalize(this);
+        }
     }
 }

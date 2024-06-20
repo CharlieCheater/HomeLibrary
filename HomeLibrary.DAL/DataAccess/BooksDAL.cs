@@ -1,4 +1,4 @@
-﻿using HomeLibrary.Infrastructure.DataAccess.Interfaces;
+﻿using HomeLibrary.Infrastructure.Domain.Interfaces;
 using HomeLibrary.Infrastructure.Models;
 using System;
 using System.Collections.Generic;
@@ -30,6 +30,7 @@ namespace HomeLibrary.Infrastructure.DataAccess
                 DbContext.Connection.Open();
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.CommandText = "DeleteBook";
+                cmd.Connection = (SqlConnection)DbContext.Connection;
                 cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
                 var result = await cmd.ExecuteNonQueryAsync();
 
@@ -45,6 +46,7 @@ namespace HomeLibrary.Infrastructure.DataAccess
                 DbContext.Connection.Open();
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.CommandText = "GetBookById";
+                cmd.Connection = (SqlConnection)DbContext.Connection;
                 cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
                 var reader = await cmd.ExecuteReaderAsync();
 
@@ -90,6 +92,7 @@ namespace HomeLibrary.Infrastructure.DataAccess
                 DbContext.Connection.Open();
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.CommandText = "GetDetailedBooks";
+                cmd.Connection = (SqlConnection)DbContext.Connection;
                 cmd.Parameters.Add("@search", SqlDbType.VarChar).Value = search;
                 cmd.Parameters.Add("@page", SqlDbType.Int).Value = page;
                 cmd.Parameters.Add("@pageSize", SqlDbType.Int).Value = pageSize;
@@ -114,6 +117,7 @@ namespace HomeLibrary.Infrastructure.DataAccess
                 DbContext.Connection.Open();
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.CommandText = "InsertBook";
+                cmd.Connection = (SqlConnection)DbContext.Connection;
                 cmd.Parameters.Add("@title", SqlDbType.VarChar).Value = book.Title;
                 cmd.Parameters.Add("@author", SqlDbType.VarChar).Value = book.Author;
                 cmd.Parameters.Add("@description", SqlDbType.VarChar).Value = book.Description;
