@@ -13,6 +13,7 @@ namespace HomeLibrary.Infrastructure.Models
         public string Description { get; set; }
         public string TableContents { get; set; }
         public string Author { get; set; }
-        public DateTime PublishedAt { get; set; }
+        public string Publisher { get; set; }
+        public int PublicationYear { get; set; }
     }
 }
