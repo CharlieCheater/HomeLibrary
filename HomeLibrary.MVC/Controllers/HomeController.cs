@@ -21,15 +21,20 @@ namespace HomeLibrary.MVC.Controllers
         {
             return View();
         }
-        public async Task<ActionResult> GetBooks(int page, string search)
+        public async Task<ActionResult> GetBooks(string search)
         {
-            var books = await _context.BooksDAL.GetDetailedBooksAsync(search, page - 1);
+            var books = await _context.BooksDAL.GetDetailedBooksAsync(search);
             return Json(books, JsonRequestBehavior.AllowGet);
         }
         public async Task<ActionResult> DeleteBook(int id)
         {
-            var books = await _context.BooksDAL.DeleteBookAsync(id);
-            return Json("success", JsonRequestBehavior.AllowGet);
+            var deleted = await _context.BooksDAL.DeleteBookAsync(id);
+
+            if (deleted)
+                return Content("OK");
+
+            Response.StatusCode = 400;
+            return Content("Не получилось удалить");
         }
         public ActionResult AddBook()
         {

@@ -72,7 +72,7 @@ namespace HomeLibrary.Infrastructure.DataAccess
         /// <param name="pageSize">Количество элементов</param>
         /// <returns></returns>
         // charliecheater: Необходимо реализовать мeтод GetBooks (20-06-2024 9:36)
-        public Task<IEnumerable<Book>> GetBooksAsync(string title, int page = 1, int pageSize = 10)
+        public Task<IEnumerable<Book>> GetBooksAsync(string title)
         {
             throw new NotImplementedException();
         }
@@ -84,7 +84,7 @@ namespace HomeLibrary.Infrastructure.DataAccess
         /// <param name="pageSize">Количество элементов</param>
         /// <returns></returns>
         // charliecheater: Добавить обработку исключений (20-06-2024 10:03)
-        public async Task<IEnumerable<Book>> GetDetailedBooksAsync(string search, int page = 1, int pageSize = 10)
+        public async Task<IEnumerable<Book>> GetDetailedBooksAsync(string search)
         {
             List<Book> books = new List<Book>();
             using (SqlCommand cmd = new SqlCommand())
@@ -94,8 +94,6 @@ namespace HomeLibrary.Infrastructure.DataAccess
                 cmd.CommandText = "GetDetailedBooks";
                 cmd.Connection = (SqlConnection)DbContext.Connection;
                 cmd.Parameters.Add("@search", SqlDbType.VarChar).Value = search;
-                cmd.Parameters.Add("@page", SqlDbType.Int).Value = page;
-                cmd.Parameters.Add("@pageSize", SqlDbType.Int).Value = pageSize;
                 var reader = await cmd.ExecuteReaderAsync();
 
                 if (!reader.HasRows)

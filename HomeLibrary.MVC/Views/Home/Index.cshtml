@@ -9,31 +9,13 @@
         </div>
     </div>
     <div id="book-collection" class="row">
-        <div class="col col-4 mt-2">
-            <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <h5 class="card-title col">Тест</h5>
-                        <h5 class="card-title col" style="text-align:right">Автор</h5>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <p class="text-wrap">ттттттттттттттттттттттттттттттттттттттттттттттттттттттттттттттттттттттттттттттттттттттттттттт</p>
-                </div>
-                <div class="card-footer">
-                    <button class="btn btn-primary">Перейти</button>
-                    <button class="btn float-end btn-danger">Удалить</button>
-                </div>
-            </div>
-        </div>
     </div>
 </main>
 @section Scripts{
     <script>
-        const getBooks = function (page) {
+        const getBooks = function () {
             let searchVal = $('#search').val();
             let params = new URLSearchParams({
-                page: page,
                 search: searchVal,
             });
             $.ajax({
@@ -50,7 +32,7 @@
                         booksHtml += book.Author;
                         booksHtml += '</div></div> <div class="card-body"><p class="text-wrap">';
                         booksHtml += book.Description;
-                        booksHtml += '</p></div><div class="card-footer"><button class="btn btn-primary">Перейти</button><button class="btn float-end btn-danger">Удалить</button></div></div></div>';
+                        booksHtml += '</p></div><div class="card-footer"><a class="btn btn-primary" href="/Home/Book/' + book.Id +'">Перейти</a><button class="btn float-end btn-danger deleteButton" data-id="' + book.Id + '">Удалить</button></div></div></div>';
                     });
                     $('#book-collection').html(booksHtml);
                 },
@@ -60,6 +42,24 @@
             })
         };
         $(document).ready(getBooks(1));
-        $('#search').on("change", () => getBooks(1));
+
+        $('#search').on("change", () => getBooks());
+
+        $("#book-collection").on("click", 'button', function (event) {
+            var id = $(event.target).data('id');
+            if (!confirm('Вы точно хотите удалить эту книгу?')) {
+                return;
+            }
+            $.ajax({
+                url: '/Home/DeleteBook/' + id,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    getBooks();
+                },
+                error: function (err) {
+                }
+            });
+        });
     </script>
     }
