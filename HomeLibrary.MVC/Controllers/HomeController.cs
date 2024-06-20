@@ -23,7 +23,7 @@ namespace HomeLibrary.MVC.Controllers
         }
         public async Task<ActionResult> GetBooks(int page, string search)
         {
-            var books = await _context.BooksDAL.GetDetailedBooksAsync(search, page);
+            var books = await _context.BooksDAL.GetDetailedBooksAsync(search, page - 1);
             return Json(books, JsonRequestBehavior.AllowGet);
         }
         public async Task<ActionResult> DeleteBook(int id)

@@ -41,17 +41,18 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function (data) {
+                    console.log(data);
                     var booksHtml = '';
                     data.forEach(function (book) {
-                        booksHtml += '<div class="col col-4 mt-2"><div class="card"><div class="card-header"> <div class="row"><h5 class="card-title">';
-                        booksHtml += book.title;
-                        booksHtml += '</h5><h5 class="card-title col" style="text-align:right">';
-                        booksHtml += book.author;
-                        booksHtml += '</div > <div class="card-body"><p class="text-wrap">';
-                        booksHtml += book.description;
+                        booksHtml += '<div class="col col-4 mt-2"><div class="card"><div class="card-header"> <div class="row card-title"><h5 class="col">';
+                        booksHtml += book.Title;
+                        booksHtml += '</h5><h5 class="col" style="text-align:right">';
+                        booksHtml += book.Author;
+                        booksHtml += '</div></div> <div class="card-body"><p class="text-wrap">';
+                        booksHtml += book.Description;
                         booksHtml += '</p></div><div class="card-footer"><button class="btn btn-primary">Перейти</button><button class="btn float-end btn-danger">Удалить</button></div></div></div>';
                     });
-                    $('$book-collection').html(booksHtml);
+                    $('#book-collection').html(booksHtml);
                 },
                 error: function (err) {
                     $('#book-collection').html('<p>Книг еще нет</p>');

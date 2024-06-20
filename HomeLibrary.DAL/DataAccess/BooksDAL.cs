@@ -100,8 +100,7 @@ namespace HomeLibrary.Infrastructure.DataAccess
 
                 if (!reader.HasRows)
                     return null;
-                var canRead = await reader.ReadAsync();
-                while (!canRead)
+                while (await reader.ReadAsync())
                 {
                     books.Add(FullReadBook(reader));
                 }
@@ -150,19 +149,17 @@ namespace HomeLibrary.Infrastructure.DataAccess
         }
         private Book ReadBook(SqlDataReader reader)
         {
-            Book book = new Book()
-            {
-                Id = int.Parse(reader[nameof(Book.Id)].ToString()),
-                Author = reader[nameof(Book.Author)].ToString(),
-                Description = reader[nameof(Book.Description)].ToString(),
-                Title = reader[nameof(Book.Title)].ToString(),
-                PublicationYear = int.Parse(reader[nameof(Book.PublicationYear)]?.ToString()),
-                Publisher = reader[nameof(Book.Publisher)]?.ToString(),
-                CreatedAt = DateTime.Parse(reader[nameof(Book.CreatedAt)].ToString()),
-            };
-            var updatedAt = reader[nameof(Book.CreatedAt)];
-            if (updatedAt != null)
-                book.UpdatedAt = DateTime.Parse(reader[nameof(Book.UpdatedAt)].ToString());
+            Book book = new Book();
+            book.Id = int.Parse(reader[nameof(Book.Id)].ToString());
+            book.Author = reader[nameof(Book.Author)].ToString();
+            book.Description = reader[nameof(Book.Description)].ToString();
+            book.Title = reader[nameof(Book.Title)].ToString();
+            book.PublicationYear = int.Parse(reader[nameof(Book.PublicationYear)]?.ToString());
+            book.Publisher = reader[nameof(Book.Publisher)]?.ToString();
+            book.CreatedAt = DateTime.Parse(reader[nameof(Book.CreatedAt)].ToString());
+            var updatedAt = reader[nameof(Book.UpdatedAt)].ToString();
+            if (!string.IsNullOrEmpty(updatedAt))
+                book.UpdatedAt = DateTime.Parse(updatedAt.ToString());
             return book;
         }
         private Book FullReadBook(SqlDataReader reader)
