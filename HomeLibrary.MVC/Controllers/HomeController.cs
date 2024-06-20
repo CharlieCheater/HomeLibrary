@@ -1,4 +1,6 @@
 ﻿using HomeLibrary.Infrastructure.Domain.Interfaces;
+using HomeLibrary.Infrastructure.Models;
+using HomeLibrary.MVC.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +25,29 @@ namespace HomeLibrary.MVC.Controllers
         {
             var books = await _context.BooksDAL.DeleteBookAsync(id);
             return Json("success", JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult AddBook()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<ActionResult> AddBook(AddBookViewModel viewModel)
+        {
+            var book = new Book
+            {
+                Author = viewModel.Author,
+                Title = viewModel.Title,
+                Description = viewModel.Description,
+                PublicationYear = viewModel.PublicationYear,
+                Publisher = viewModel.Publisher,
+                TableContents = viewModel.TableContents,
+            };
+            var books = await _context.BooksDAL.InsertBookAsync(book);
+            return Json("success", JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult BookDetails()
+        {
+            return View();
         }
         public ActionResult About()
         {
