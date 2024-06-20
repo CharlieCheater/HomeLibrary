@@ -44,8 +44,8 @@
   <ItemGroup>
     <Compile Include="DataAccess\BooksDAL.cs" />
     <Compile Include="DataAccess\DatabaseContext.cs" />
-    <Compile Include="DataAccess\Interfaces\IBooksDAL.cs" />
-    <Compile Include="DataAccess\Interfaces\IDbContext.cs" />
+    <Compile Include="Domain\Abstracts\IBooksDAL.cs" />
+    <Compile Include="Domain\Abstracts\IDbContext.cs" />
     <Compile Include="Domain\Abstracts\Auditable.cs" />
     <Compile Include="Domain\Abstracts\Identity.cs" />
     <Compile Include="Domain\Interfaces\IHaveCreationDate.cs" />
