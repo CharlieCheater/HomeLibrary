@@ -1,0 +1,32 @@
+﻿@model HomeLibrary.MVC.Models.BookViewModel
+@{
+    ViewBag.Title = "Информация о книге " + Model.Title;
+}
+<main aria-labelledby="title">
+    <h2 id="title">@Model.Title</h2>
+    <dl>
+        <dt>Автор</dt>
+        <dd>@Model.Author</dd>
+        <dt>Издатель</dt>
+        <dd>@Model.Publisher</dd>
+        <dt>Год издания</dt>
+        <dd>@Model.PublicationYear г.</dd>
+    </dl>
+    <div id="content">
+
+    </div>
+
+    <p>Use this area to provide additional information.</p>
+</main>
+@section Scripts {
+    <script>
+        // charliecheater: доделать отображение XML
+        @*$(document).ready(() => {
+            var htmlData = '';
+            var xml = jQuery.parseXML("@Model.TableContents");
+            $(xml).find("content").each(function () {
+                var number = $(this).find("number").
+            });
+        });*@
+    </script>
+} 

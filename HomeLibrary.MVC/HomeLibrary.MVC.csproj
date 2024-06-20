@@ -155,6 +155,7 @@
     </Compile>
     <Compile Include="Globals\ErrorMessages.cs" />
     <Compile Include="Models\AddBookViewModel.cs" />
+    <Compile Include="Models\BookViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -209,6 +210,7 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\AddBook.cshtml" />
+    <Content Include="Views\Home\Book.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

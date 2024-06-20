@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HomeLibrary.Infrastructure.Domain.Interfaces
+namespace HomeLibrary.DAL.Domain.Interfaces
 {
 
     /// <summary>

@@ -1,11 +1,7 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
-using HomeLibrary.Infrastructure.DataAccess;
-using HomeLibrary.Infrastructure.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using HomeLibrary.DAL.DataAccess;
+using HomeLibrary.DAL.Domain.Interfaces;
 using System.Web.Mvc;
 
 namespace HomeLibrary.MVC.App_Start

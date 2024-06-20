@@ -1,5 +1,5 @@
-﻿using HomeLibrary.Infrastructure.Domain.Interfaces;
-using HomeLibrary.Infrastructure.Models;
+﻿using HomeLibrary.DAL.Domain.Interfaces;
+using HomeLibrary.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HomeLibrary.Infrastructure.DataAccess
+namespace HomeLibrary.DAL.DataAccess
 {
     /// <summary>
     /// Класс для работы с таблицей Books в базе данных
@@ -67,21 +67,35 @@ namespace HomeLibrary.Infrastructure.DataAccess
         /// <summary>
         /// Возвращает объекты книг без оглавлений
         /// </summary>
-        /// <param name="title">Поиск по наименованию</param>
-        /// <param name="page">Номер страницы</param>
-        /// <param name="pageSize">Количество элементов</param>
+        /// <param name="search">Поиск по наименованию</param>
         /// <returns></returns>
         // charliecheater: Необходимо реализовать мeтод GetBooks (20-06-2024 9:36)
-        public Task<IEnumerable<Book>> GetBooksAsync(string title)
+        public async Task<IEnumerable<Book>> GetBooksAsync(string search)
         {
-            throw new NotImplementedException();
+            List<Book> books = new List<Book>();
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                DbContext.Connection.Open();
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "GetDetailedBooks";
+                cmd.Connection = (SqlConnection)DbContext.Connection;
+                cmd.Parameters.Add("@search", SqlDbType.VarChar).Value = search;
+                var reader = await cmd.ExecuteReaderAsync();
+
+                if (!reader.HasRows)
+                    return null;
+                while (await reader.ReadAsync())
+                {
+                    books.Add(ReadBook(reader));
+                }
+                DbContext.Connection.Close();
+            }
+            return books;
         }
         /// <summary>
         /// Возвращает объекты книг с оглавлениями
         /// </summary>
         /// <param name="search">Поиск по наименованию</param>
-        /// <param name="page">Номер страницы</param>
-        /// <param name="pageSize">Количество элементов</param>
         /// <returns></returns>
         // charliecheater: Добавить обработку исключений (20-06-2024 10:03)
         public async Task<IEnumerable<Book>> GetDetailedBooksAsync(string search)
@@ -137,13 +151,44 @@ namespace HomeLibrary.Infrastructure.DataAccess
                 {
                     DbContext.Connection.Close();
                 }
-                return true;
+                return result;
             }
         }
 
-        public Task<bool> UpdateBookAsync(Book book)
+        public async Task<bool> UpdateBookAsync(Book book)
         {
-            throw new NotImplementedException();
+            if (book == null) throw new ArgumentNullException(nameof(book));
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                DbContext.Connection.Open();
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "UpdateBook";
+                cmd.Connection = (SqlConnection)DbContext.Connection;
+                cmd.Parameters.Add("@id", SqlDbType.Int).Value = book.Title;
+                cmd.Parameters.Add("@title", SqlDbType.VarChar).Value = book.Title;
+                cmd.Parameters.Add("@author", SqlDbType.VarChar).Value = book.Author;
+                cmd.Parameters.Add("@description", SqlDbType.VarChar).Value = book.Description;
+                cmd.Parameters.Add("@publisher", SqlDbType.VarChar).Value = book.Publisher;
+                cmd.Parameters.Add("@tableContents", SqlDbType.Xml).Value = book.TableContents;
+                cmd.Parameters.Add("@publicationYear", SqlDbType.Xml).Value = book.PublicationYear;
+
+                var result = false;
+                try
+                {
+                    var status = await cmd.ExecuteNonQueryAsync();
+
+                    result = status == 1;
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("[Critical]" + ex.Message);
+                }
+                finally
+                {
+                    DbContext.Connection.Close();
+                }
+                return result;
+            }
         }
         private Book ReadBook(SqlDataReader reader)
         {

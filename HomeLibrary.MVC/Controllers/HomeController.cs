@@ -1,11 +1,7 @@
-﻿using HomeLibrary.Infrastructure.Domain.Interfaces;
-using HomeLibrary.Infrastructure.Models;
+﻿using HomeLibrary.DAL.Domain.Interfaces;
+using HomeLibrary.DAL.Models;
 using HomeLibrary.MVC.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace HomeLibrary.MVC.Controllers
@@ -20,6 +16,21 @@ namespace HomeLibrary.MVC.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+        public async Task<ActionResult> Book(int id)
+        {
+            var book = await _context.BooksDAL.GetBookByIdAsync(id);
+            BookViewModel vm = new BookViewModel
+            {
+                Author = book.Author,
+                Description = book.Description,
+                Id = id,
+                PublicationYear = book.PublicationYear,
+                Publisher = book.Publisher,
+                TableContents = book.TableContents,
+                Title = book.Title
+            };
+            return View(vm);
         }
         public async Task<ActionResult> GetBooks(string search)
         {
@@ -54,10 +65,6 @@ namespace HomeLibrary.MVC.Controllers
             };
             var books = await _context.BooksDAL.InsertBookAsync(book);
             return Json("success", JsonRequestBehavior.AllowGet);
-        }
-        public ActionResult BookDetails()
-        {
-            return View();
         }
         public ActionResult About()
         {

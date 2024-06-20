@@ -1,11 +1,11 @@
-﻿using HomeLibrary.Infrastructure.Models;
+﻿using HomeLibrary.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HomeLibrary.Infrastructure.Domain.Interfaces
+namespace HomeLibrary.DAL.Domain.Interfaces
 {
     public interface IBooksDAL
     {

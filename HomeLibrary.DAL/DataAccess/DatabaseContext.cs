@@ -1,4 +1,4 @@
-﻿using HomeLibrary.Infrastructure.Domain.Interfaces;
+﻿using HomeLibrary.DAL.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HomeLibrary.Infrastructure.DataAccess
+namespace HomeLibrary.DAL.DataAccess
 {
     public class DatabaseContext : IDbContext, IDisposable
     {
