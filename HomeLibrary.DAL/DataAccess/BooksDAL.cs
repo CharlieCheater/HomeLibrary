@@ -134,13 +134,17 @@ namespace HomeLibrary.DAL.DataAccess
                 cmd.Parameters.Add("@description", SqlDbType.VarChar).Value = book.Description;
                 cmd.Parameters.Add("@publisher", SqlDbType.VarChar).Value = book.Publisher;
                 cmd.Parameters.Add("@tableContents", SqlDbType.Xml).Value = book.TableContents;
-                cmd.Parameters.Add("@publicationYear", SqlDbType.Xml).Value = book.PublicationYear;
-
+                cmd.Parameters.Add("@publicationYear", SqlDbType.Int).Value = book.PublicationYear;
+                SqlParameter outputIdParam = new SqlParameter("@id", SqlDbType.Int)
+                {
+                    Direction = ParameterDirection.Output,
+                };
+                cmd.Parameters.Add(outputIdParam);
                 var result = false;
                 try
                 {
-                    var id = await cmd.ExecuteScalarAsync();
-                    book.Id = int.Parse(result.ToString());
+                    await cmd.ExecuteNonQueryAsync();
+                    book.Id = int.Parse(outputIdParam.Value.ToString());
                     result = true;
                 }
                 catch (Exception ex)
