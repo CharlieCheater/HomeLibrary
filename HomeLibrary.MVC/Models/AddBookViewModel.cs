@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace HomeLibrary.MVC.Models
 {
@@ -14,6 +15,7 @@ namespace HomeLibrary.MVC.Models
         [Required(ErrorMessage = ErrorMessages.RequiredField)]
         public string Description { get; set; }
         [Required(ErrorMessage = ErrorMessages.RequiredField)]
+        [AllowHtml]
         public string TableContents { get; set; }
         [Required(ErrorMessage = ErrorMessages.RequiredField)]
         public string Author { get; set; }

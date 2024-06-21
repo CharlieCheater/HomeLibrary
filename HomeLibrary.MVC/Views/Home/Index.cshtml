@@ -4,8 +4,11 @@
 
 <main>
     <div class="row">
-        <div class="col">
-            <input id="search" type="search" class="form-control form-control-sm" placeholder="Поиск по наименованию" />
+        <div class="col col-4">
+            <input id="search" type="search" class="form-control form-control-sm mw-100" placeholder="Поиск по наименованию" />
+        </div>
+        <div class="col col-4">
+            @Html.ActionLink("Добавить книгу", "AddBook", null, new { @class = "btn btn-sm btn-primary" })
         </div>
     </div>
     <div id="book-collection" class="row">
@@ -32,7 +35,7 @@
                         booksHtml += book.Author;
                         booksHtml += '</div></div> <div class="card-body"><p class="text-wrap">';
                         booksHtml += book.Description;
-                        booksHtml += '</p></div><div class="card-footer"><a class="btn btn-primary" href="/Home/Book/' + book.Id +'">Перейти</a><button class="btn float-end btn-danger deleteButton" data-id="' + book.Id + '">Удалить</button></div></div></div>';
+                        booksHtml += '</p></div><div class="card-footer"><a class="btn btn-primary" href="/Home/Book/' + book.Id + '">Перейти</a><button class="btn float-end btn-danger deleteButton" data-id="' + book.Id + '">Удалить</button></div></div></div>';
                     });
                     $('#book-collection').html(booksHtml);
                 },
@@ -58,8 +61,9 @@
                     getBooks();
                 },
                 error: function (err) {
+                    console.log(err);
                 }
             });
         });
     </script>
-    }
+}

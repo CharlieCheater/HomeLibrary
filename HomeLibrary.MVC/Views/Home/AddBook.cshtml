@@ -5,73 +5,84 @@
 }
 
 <!DOCTYPE html>
+@Styles.Render("~/Content/codemirror")
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css" rel="stylesheet" />
 
 <main aria-labelledby="title">
     <div class="card">
         <div class="card-header">
             <h4>@ViewBag.Title</h4>
         </div>
-    </div>
-    <div class="card-body">
         @using (Html.BeginForm())
         {
-            <div class="row">
-                <div class="col">
-                    <div class="form-group">
-                        <label>Название *</label>
-                        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control form-control-sm", placeholder = "Это поле обязательно" } })
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Название *</label>
+                            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control form-control-sm", placeholder = "Это поле обязательно" } })
+                            @Html.ValidationMessageFor(model => model.Title, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Автор *</label>
+                            @Html.EditorFor(model => model.Author, new { htmlAttributes = new { @class = "form-control form-control-sm", placeholder = "Это поле обязательно" } })
+                            @Html.ValidationMessageFor(model => model.Author, null, new { @class = "text-danger" })
+                        </div>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="form-group">
-                        <label>Автор *</label>
-                        @Html.EditorFor(model => model.Author, new { htmlAttributes = new { @class = "form-control form-control-sm", placeholder = "Это поле обязательно" } })
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Издатель *</label>
+                            @Html.EditorFor(model => model.Publisher, new { htmlAttributes = new { @class = "form-control form-control-sm", placeholder = "Это поле обязательно" } })
+                            @Html.ValidationMessageFor(model => model.Publisher, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Год публикации * </label>
+                            @Html.EditorFor(model => model.PublicationYear, new { htmlAttributes = new { id = "yearpicker", @class = "form-control form-control-sm", type = "text", placeholder = "Это поле обязательно", } })
+                            @Html.ValidationMessageFor(model => model.PublicationYear, null, new { @class = "text-danger" })
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <div class="form-group">
-                        <label>Издатель *</label>
-                        @Html.EditorFor(model => model.Publisher, new { htmlAttributes = new { @class = "form-control form-control-sm", placeholder = "Это поле обязательно" } })
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Описание *  @Html.ValidationMessageFor(model => model.Description, null, new { @class = "text-danger" })</label>
+                            @Html.TextAreaFor(model => model.Description, new { @class = "form-control form-control-sm", placeholder = "Это поле обязательно", style = "max-width:100% !important" })
+                        </div>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="form-group">
-                        <label>Год публикации *</label>
-                        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control form-control-sm", type = "number", placeholder = "Это поле обязательно", min = 0 } })
-                    </div>
+                <div class="row mt-2">
+                    @Html.TextAreaFor(model => model.TableContents, new { id = "xml-data", name = "code" })
                 </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <div class="form-group">
-                        <label>Описание *</label>
-                        @Html.TextAreaFor(model => model.Description, new { @class = "form-control form-control-sm", placeholder = "Это поле обязательно", style = "max-width:100% !important" })
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <div id="editor">
-                    </div>
-                </div>
-            </div>
-            <div class="mt-5">
 
-                <button class="btn btn-success">Добавить</button>
-                <a class="btn btn-info" onclick="location.href='@Url.Action("Index", "Home")'">Назад</a>
             </div>
-
-
+            <div class="card-footer" style="margin-top:5rem">
+                <button type="submit" class="btn btn-success">Добавить</button>
+                <a class="btn btn-secondary" onclick="location.href='@Url.Action("Index", "Home")'">Отмена</a>
+            </div>
         }
     </div>
 </main>
 @section Scripts{
-    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+    @Scripts.Render("~/bundles/codemirror")
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
     <script>
-        const quill = new Quill('#editor', {
-            theme: 'snow'
+        var editor = CodeMirror.fromTextArea(document.getElementById("xml-data"), {
+            mode: "xml",
+            lineNumbers: true
         });
+        $("#yearpicker").datepicker({
+            format: "yyyy",
+            viewMode: "years",
+            minViewMode: "years"
+        });
+        //$("#yearpicker").on("input", () => {
+        //    $(this).val($(this).val().replace(/[^\d]/g, "$1"))
+        //})
     </script>
 }

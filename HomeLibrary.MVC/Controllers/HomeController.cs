@@ -1,5 +1,6 @@
 ﻿using HomeLibrary.DAL.Domain.Interfaces;
 using HomeLibrary.DAL.Models;
+using HomeLibrary.MVC.Globals;
 using HomeLibrary.MVC.Models;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -42,10 +43,10 @@ namespace HomeLibrary.MVC.Controllers
             var deleted = await _context.BooksDAL.DeleteBookAsync(id);
 
             if (deleted)
-                return Content("OK");
+                return Json(new { Text = "OK" }, JsonRequestBehavior.AllowGet);
 
             Response.StatusCode = 400;
-            return Content("Не получилось удалить");
+            return Json(new { Text = "Не получилось удалить" }, JsonRequestBehavior.AllowGet);
         }
         public ActionResult AddBook()
         {
@@ -54,6 +55,9 @@ namespace HomeLibrary.MVC.Controllers
         [HttpPost]
         public async Task<ActionResult> AddBook(AddBookViewModel viewModel)
         {
+            if (!ModelState.IsValid)
+                return View(viewModel);
+
             var book = new Book
             {
                 Author = viewModel.Author,
@@ -63,8 +67,14 @@ namespace HomeLibrary.MVC.Controllers
                 Publisher = viewModel.Publisher,
                 TableContents = viewModel.TableContents,
             };
-            var books = await _context.BooksDAL.InsertBookAsync(book);
-            return Json("success", JsonRequestBehavior.AllowGet);
+            var result = await _context.BooksDAL.InsertBookAsync(book);
+
+            if(!result)
+            {
+                ModelState.AddModelError("all", ErrorMessages.ExceptionOnInsertData);
+                return View(viewModel);
+            }
+            return RedirectToAction(nameof(Book), new { id = book.Id });
         }
         public ActionResult About()
         {
